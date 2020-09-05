@@ -8,34 +8,42 @@
  */
 int ec_save(EC_KEY *key, char const *folder)
 {
-	FILE *fp;
 	char path[128] = {0};
+	BIO *out;
 
 	if (!key || !folder)
 		return (0);
 	mkdir(folder, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 
 	sprintf(path, "%s/key.pem", folder);
-	fp = fopen(path, "w");
-	if (!fp)
+	out = BIO_new(BIO_s_file());
+	if (!out)
 		return (0);
-	if (!PEM_write_ECPrivateKey(fp, key, NULL, NULL, 0, NULL, NULL))
+	BIO_set_close(out, BIO_CLOSE);
+	if (!BIO_write_filename(out, path))
+		return (BIO_free_all(out), 0);
+	if (!PEM_write_bio_ECPrivateKey(out, key, NULL, NULL, 0, NULL, NULL))
 	{
-		fclose(fp);
+		BIO_free_all(out);
 		return (0);
 	}
-	fclose(fp);
+	BIO_free_all(out);
 
 	sprintf(path, "%s/key_pub.pem", folder);
-	fp = fopen(path, "w");
-	if (!fp)
+	out = BIO_new(BIO_s_file());
+
+	if (!out)
 		return (0);
-	if (!PEM_write_EC_PUBKEY(fp, key))
+	BIO_set_close(out, BIO_CLOSE);
+	if (!BIO_write_filename(out, path))
+		return (BIO_free_all(out), 0);
+	
+	if (!PEM_write_bio_EC_PUBKEY(out, key))
 	{
-		fclose(fp);
+		BIO_free_all(out);
 		return (0);
 	}
-	fclose(fp);
+	BIO_free_all(out);
 
 	return (1);
 }
