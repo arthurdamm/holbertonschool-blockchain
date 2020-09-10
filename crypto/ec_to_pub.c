@@ -15,8 +15,10 @@ uint8_t *ec_to_pub(EC_KEY const *key, uint8_t pub[EC_PUB_LEN])
 	if (!key || !pub)
 		return (NULL);
 	group = EC_KEY_get0_group(key);
+	if (!group)
+		return (NULL);
 	point = EC_KEY_get0_public_key(key);
-	if (!group || !point)
+	if (!point)
 		return (NULL);
 	len = EC_POINT_point2oct(
 		group,
