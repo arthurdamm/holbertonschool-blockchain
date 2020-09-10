@@ -8,8 +8,8 @@
  */
 uint8_t *ec_to_pub(EC_KEY const *key, uint8_t pub[EC_PUB_LEN])
 {
-	EC_GROUP const *group = NULL;
-	EC_POINT const *point = NULL;
+	const EC_GROUP *group = NULL;
+	const EC_POINT *point = NULL;
 
 	if (!key || !pub)
 		return (NULL);
