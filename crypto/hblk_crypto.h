@@ -24,6 +24,9 @@
 /* Maximum signature octet string length (using 256-bit curve) */
 #define SIG_MAX_LEN    72
 
+#define PRI_FILENAME   "key.pem"
+#define PUB_FILENAME   "key_pub.pem"
+
 /**
  * struct sig_s - EC Signature structure
  *
@@ -52,5 +55,7 @@ EC_KEY *ec_from_pub(uint8_t const pub[EC_PUB_LEN]);
 int ec_save(EC_KEY *key, char const *folder);
 
 EC_KEY *ec_load(char const *folder);
+
+uint8_t *ec_sign(EC_KEY const *key, uint8_t const *msg, size_t msglen, sig_t *sig);
 
 #endif
