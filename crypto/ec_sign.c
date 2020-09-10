@@ -35,7 +35,6 @@ uint8_t *ec_sign(EC_KEY const *key, uint8_t const *msg, size_t msglen,
 		EVP_PKEY_free(pkey), EVP_MD_CTX_destroy(ctx);
 		return (NULL);
 	}
-	sig->sig[0] = 0;
 	sig->len = SIG_MAX_LEN;
 	ret = EVP_DigestSignFinal(ctx, sig->sig, (size_t *)&(sig->len));
 	if (ret != 1)
