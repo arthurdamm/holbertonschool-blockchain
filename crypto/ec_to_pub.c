@@ -12,7 +12,7 @@ uint8_t *ec_to_pub(EC_KEY const *key, uint8_t pub[EC_PUB_LEN])
 	EC_POINT const *point = NULL;
 	size_t len;
 
-	if (!key)
+	if (!key || !pub)
 		return (NULL);
 	group = EC_KEY_get0_group(key);
 	point = EC_KEY_get0_public_key(key);
