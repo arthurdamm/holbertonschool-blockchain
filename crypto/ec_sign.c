@@ -21,27 +21,26 @@ uint8_t *ec_sign(EC_KEY const *key, uint8_t const *msg, size_t msglen,
 	if (!pkey)
 		return (NULL);
 	if (EVP_PKEY_set1_EC_KEY(pkey, (struct ec_key_st *)key) != 1)
-		return (NULL);
+		return (EVP_PKEY_free(pkey), NULL);
 	ctx = EVP_MD_CTX_create();
 	if (!ctx)
-		return (NULL);
+		return (EVP_PKEY_free(pkey), NULL);
 	if (EVP_DigestSignInit(ctx, NULL, EVP_sha256(), NULL, pkey) != 1)
 	{
-		EVP_MD_CTX_destroy(ctx);
+		EVP_PKEY_free(pkey), EVP_MD_CTX_destroy(ctx);
 		return (NULL);
 	}
 	if (EVP_DigestSignUpdate(ctx, msg, msglen) != 1)
 	{
-		EVP_MD_CTX_destroy(ctx);
+		EVP_PKEY_free(pkey), EVP_MD_CTX_destroy(ctx);
 		return (NULL);
 	}
 	sig->len = SIG_MAX_LEN;
 	ret = EVP_DigestSignFinal(ctx, sig->sig, (size_t *)&(sig->len));
 	if (ret != 1)
 	{
-		dprintf(2, "ERR [%s]\n", ERR_error_string(ERR_get_error(), NULL));
-		EVP_MD_CTX_destroy(ctx);
-		dprintf(2, "FAIL6[ %d]\n", ret);
+		/* dprintf(2, "ERR [%s]\n", ERR_error_string(ERR_get_error(), NULL)); */
+		EVP_PKEY_free(pkey), EVP_MD_CTX_destroy(ctx);
 		return (NULL);
 	}
 
