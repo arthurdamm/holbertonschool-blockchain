@@ -12,9 +12,11 @@
 
 #include <openssl/sha.h>
 #include <openssl/ec.h>
+#include <openssl/evp.h>
 /* #include <openssl/bn.h> */
 #include <openssl/bio.h>
 #include <openssl/err.h>
+#include <openssl/ssl.h>
 #include <openssl/pem.h>
 
 #define EC_CURVE   NID_secp256k1
