@@ -13,7 +13,6 @@
 #include <openssl/sha.h>
 #include <openssl/ec.h>
 /* #include <openssl/bn.h> */
-#include <openssl/obj_mac.h>
 #include <openssl/bio.h>
 #include <openssl/err.h>
 #include <openssl/pem.h>
@@ -40,9 +39,6 @@ typedef struct sig_s
 	uint8_t		sig[SIG_MAX_LEN];
 	uint8_t		len;
 } sig_t;
-
-
-void _print_hex_buffer(uint8_t const *buf, size_t len);
 
 uint8_t *sha256(int8_t const *s, size_t len,
 	uint8_t digest[SHA256_DIGEST_LENGTH]);
