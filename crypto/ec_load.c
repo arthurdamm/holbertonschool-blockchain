@@ -14,16 +14,6 @@ EC_KEY *ec_load(char const *folder)
 	if (!folder)
 		return (0);
 
-	sprintf(path, "%s/" PRI_FILENAME, folder);
-	fp = fopen(path, "r");
-	if (!fp)
-		return (0);
-	if (!PEM_read_ECPrivateKey(fp, &key, NULL, NULL))
-	{
-		fclose(fp);
-		return (0);
-	}
-	fclose(fp);
 
 	sprintf(path, "%s/" PUB_FILENAME, folder);
 	fp = fopen(path, "r");
@@ -40,5 +30,15 @@ EC_KEY *ec_load(char const *folder)
 	}
 	fclose(fp);
 
+	sprintf(path, "%s/" PRI_FILENAME, folder);
+	fp = fopen(path, "r");
+	if (!fp)
+		return (0);
+	if (!PEM_read_ECPrivateKey(fp, &key, NULL, NULL))
+	{
+		fclose(fp);
+		return (0);
+	}
+	fclose(fp);
 	return (key);
 }
