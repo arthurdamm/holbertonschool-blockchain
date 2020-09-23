@@ -83,5 +83,6 @@ blockchain_t *blockchain_create(void);
 block_t *block_create(block_t const *prev, int8_t const *data,
 	uint32_t data_len);
 void block_destroy(block_t *block);
+void blockchain_destroy(blockchain_t *blockchain);
 
 #endif
