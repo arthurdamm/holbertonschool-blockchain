@@ -1,8 +1,5 @@
 #include "blockchain.h"
 
-#define HBLK_MAGIC "HBLK"
-#define HBLK_VERSION "0.1"
-
 /**
  * blockchain_serialize - serializes blockchain to file
  * @blockchain: pointer to blockchain to serialize
