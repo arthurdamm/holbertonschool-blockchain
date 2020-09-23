@@ -18,5 +18,6 @@ block_t *block_create(block_t const *prev, int8_t const *data,
 	block->data.len = MIN(data_len, BLOCKCHAIN_DATA_MAX);
 	block->info.index = prev->info.index + 1;
 	block->info.timestamp = time(NULL);
+	memcpy(&(block->info.prev_hash), prev->hash, SHA256_DIGEST_LENGTH);
 	return (block);
 }
