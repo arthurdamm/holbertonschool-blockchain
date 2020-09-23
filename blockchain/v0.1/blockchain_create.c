@@ -15,7 +15,6 @@ blockchain_t *blockchain_create(void)
 	block_t *block = calloc(1, sizeof(*block));
 	llist_t *list = llist_create(MT_SUPPORT_TRUE);
 
-	llist_destroy(NULL, 1, NULL);
 	if (!chain || !block || !list)
 	{
 		free(chain), free(block), llist_destroy(list, 1, NULL);

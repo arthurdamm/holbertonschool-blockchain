@@ -6,9 +6,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <llist.h>
+#include <time.h>
 
 #include <openssl/sha.h>
 
+#define MIN(x, y) ((x) < (y) ? (x) : (y))
 /**
  * struct blockchain_s - Blockchain structure
  *
@@ -78,5 +80,7 @@ typedef struct block_s
 } block_t;
 
 blockchain_t *blockchain_create(void);
+block_t *block_create(block_t const *prev, int8_t const *data,
+	uint32_t data_len);
 
 #endif
