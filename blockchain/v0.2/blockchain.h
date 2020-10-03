@@ -60,6 +60,8 @@ typedef struct block_info_s
 } block_info_t;
 
 #define BLOCKCHAIN_DATA_MAX 1024
+#define BLOCK_GENERATION_INTERVAL 1
+#define DIFFICULTY_ADJUSTMENT_INTERVAL 5
 
 /**
  * struct block_data_s - Block data
@@ -123,5 +125,6 @@ int block_is_valid(block_t const *block, block_t const *prev_block);
 int hash_matches_difficulty(uint8_t const hash[SHA256_DIGEST_LENGTH],
 	uint32_t difficulty);
 void block_mine(block_t *block);
+uint32_t blockchain_difficulty(blockchain_t const *blockchain);
 
 #endif
