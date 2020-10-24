@@ -24,7 +24,7 @@ int hash_inputs(llist_node_t node, unsigned int idx, void *arg)
  */
 int hash_outputs(llist_node_t node, unsigned int idx, void *arg)
 {
-	memcpy(*(uint8_t **)arg, node, SHA256_DIGEST_LENGTH);
+	memcpy(*(uint8_t **)arg, ((tx_out_t *)node)->hash, SHA256_DIGEST_LENGTH);
 	*(uint8_t **)arg += SHA256_DIGEST_LENGTH;
 	return (0);
 	(void)idx;
