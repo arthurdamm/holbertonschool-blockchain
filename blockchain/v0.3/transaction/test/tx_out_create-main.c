@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-#include "../../blockchain.h"
+#include "hblk_crypto.h"
+#include "transaction.h"
 
 void _print_hex_buffer(uint8_t const *buf, size_t len);
 

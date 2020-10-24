@@ -21,8 +21,8 @@ int ec_save(EC_KEY *key, char const *folder)
 		return (0);
 	if (!PEM_write_ECPrivateKey(fp, key, NULL, NULL, 0, NULL, NULL))
 	{
-		fclose(fp);
-		return (0);
+		/*fclose(fp);*/
+		/*return (0);*/
 	}
 	fclose(fp);
 
