@@ -20,7 +20,7 @@ int main(void)
     EC_KEY *owner;
     llist_t *all_unspent;
     unspent_tx_out_t *unspent;
-    tx_in_t *in;
+    tx_in_t *in, *in2;
     transaction_t transaction;
 
     /* Create a mock Block hash */
@@ -50,7 +50,9 @@ int main(void)
     transaction.outputs = llist_create(MT_SUPPORT_FALSE);
     /* Create the transaction input from the unspent transaction output */
     in = tx_in_create(unspent);
+    in2 = tx_in_create(unspent);
     llist_add_node(transaction.inputs, in, ADD_NODE_REAR);
+    llist_add_node(transaction.inputs, in2, ADD_NODE_REAR);
     pub[1] *= 2; /* Pretend it's a different address :) */
     out2 = tx_out_create(972, pub);
     llist_add_node(transaction.outputs, out2, ADD_NODE_REAR);
