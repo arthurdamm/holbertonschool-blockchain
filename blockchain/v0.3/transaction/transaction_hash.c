@@ -33,5 +33,8 @@ uint8_t *transaction_hash(transaction_t const *transaction,
 		memcpy(buf, txo->hash, SHA256_DIGEST_LENGTH);
 		buf += SHA256_DIGEST_LENGTH;
 	}
-	return (sha256((const int8_t *)_buf, len, hash_buf));
+	if (!sha256((const int8_t *)_buf, len, hash_buf))
+		hash_buf = NULL;
+	free(_buf);
+	return (hash_buf);
 }
