@@ -45,6 +45,16 @@ int map_output_to_input(llist_node_t node, unsigned int idx, void *arg)
 	(void)idx;
 }
 
+/**
+ * populate_tx - populates tx struct with data
+ * @sender: sender's key
+ * @visitor: visitor struct w/ tx data
+ * @all_unspent: all unspent tx
+ * @sender_pub: buffer of sender's public key
+ * @receiver_pub: buffer of receiver's public key
+ * @tx: transaction struct to populate
+ * Return: tx struct
+ */
 transaction_t *populate_tx(EC_KEY const *sender, visitor_t *visitor,
 	llist_t *all_unspent, uint8_t *sender_pub, uint8_t *receiver_pub,
 	transaction_t *tx)
@@ -57,16 +67,19 @@ transaction_t *populate_tx(EC_KEY const *sender, visitor_t *visitor,
 	to_receiver = tx_out_create(visitor->amount, receiver_pub);
 	to_sender = visitor->total_amount > visitor->amount ?
 		tx_out_create(visitor->total_amount - visitor->amount, sender_pub) : 0;
+
 	if (!tx->inputs || !tx->outputs || !to_receiver ||
 		(visitor->total_amount > visitor->amount && !to_sender))
 		return (llist_destroy(tx->inputs, 1, free),
 			llist_destroy(tx->outputs, 1, free), free(tx), NULL);
 	llist_for_each(visitor->sender_unspent, map_output_to_input, tx->inputs);
+
 	if (llist_add_node(tx->outputs, to_receiver, ADD_NODE_REAR) ||
 		(to_sender && llist_add_node(tx->outputs, to_sender, ADD_NODE_REAR)))
 		exit(1);
 	if (!transaction_hash(tx, tx->id))
 		exit(1);
+
 	for (i = 0; i < llist_size(tx->inputs); i++)
 	{
 		tx_in_t *in = llist_get_node_at(tx->inputs, i);
