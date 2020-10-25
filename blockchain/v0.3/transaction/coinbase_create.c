@@ -14,7 +14,7 @@ transaction_t *coinbase_create(EC_KEY const *receiver, uint32_t block_index)
 	llist_t *inputs, *outputs;
 	uint8_t pub[EC_PUB_LEN];
 
-	if (!receiver || !block_index || !ec_to_pub(receiver, pub))
+	if (!receiver || !ec_to_pub(receiver, pub))
 		return (NULL);
 	tx = calloc(1, sizeof(*tx));
 	txi = calloc(1, sizeof(*txi));
