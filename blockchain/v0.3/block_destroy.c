@@ -6,5 +6,8 @@
  */
 void block_destroy(block_t *block)
 {
+	if (!block)
+		return;
+	transaction_destroy(block->transactions);
 	free(block);
 }
