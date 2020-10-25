@@ -31,8 +31,4 @@ sig_t *tx_in_sign(tx_in_t *in, uint8_t const tx_id[SHA256_DIGEST_LENGTH],
 		return (NULL);
 
 	return (&in->sig);
-	(void)in;
-	(void)tx_id;
-	(void)sender;
-	(void)all_unspent;
 }
