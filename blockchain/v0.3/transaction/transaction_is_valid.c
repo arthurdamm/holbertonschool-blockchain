@@ -78,6 +78,8 @@ int transaction_is_valid(transaction_t const *transaction,
 	uint8_t hash_buf[SHA256_DIGEST_LENGTH];
 	validation_vistor_t visitor = {0};
 
+	if (!transaction || !all_unspent)
+		return (0);
 	visitor.tx = transaction;
 	visitor.all_unspent = all_unspent;
 	visitor.valid = 1;
