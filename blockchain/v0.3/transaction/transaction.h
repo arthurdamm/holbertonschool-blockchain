@@ -94,6 +94,7 @@ typedef struct Visitor
  * @valid: 1 if tx valid else 0
  * @all_unspent: all unspent txs
  * @tx: the tx to validate
+ * @block_index: the block index cointaining tx
  */
 typedef struct Validation_Visitor
 {
@@ -102,6 +103,7 @@ typedef struct Validation_Visitor
 	int valid;
 	llist_t *all_unspent;
 	transaction_t const *tx;
+	uint32_t block_index;
 } validation_vistor_t;
 
 tx_out_t *tx_out_create(uint32_t amount, uint8_t const pub[EC_PUB_LEN]);
