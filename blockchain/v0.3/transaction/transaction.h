@@ -71,6 +71,22 @@ typedef struct unspent_tx_out_s
 	tx_out_t	out;
 } unspent_tx_out_t;
 
+/**
+ * struct Visitor - visitor struct for collect sender's unspent
+ * @sender_unspent: list to collect sender's unspent tx
+ * @sender_pub: sender's public key
+ * @total_amount: of unspent tx
+ * @amount: amount to send
+ */
+typedef struct Visitor
+{
+	llist_t *sender_unspent;
+	uint8_t *sender_pub;
+	uint64_t total_amount;
+	uint64_t amount;
+
+} visitor_t;
+
 tx_out_t *tx_out_create(uint32_t amount, uint8_t const pub[EC_PUB_LEN]);
 
 unspent_tx_out_t *unspent_tx_out_create(
