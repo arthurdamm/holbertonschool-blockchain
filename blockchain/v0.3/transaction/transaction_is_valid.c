@@ -91,7 +91,7 @@ int transaction_is_valid(transaction_t const *transaction,
 		!visitor.valid)
 		return (0);
 	if (llist_for_each(transaction->outputs, check_outputs, &visitor) ||
-		visitor.in_amount != visitor.out_amount)
+		visitor.in_amount != visitor.out_amount || !visitor.in_amount)
 		return (0);
 	return (1);
 }
