@@ -128,4 +128,6 @@ transaction_t *coinbase_create(EC_KEY const *receiver, uint32_t block_index);
 
 int coinbase_is_valid(transaction_t const *coinbase, uint32_t block_index);
 
+void transaction_destroy(transaction_t *transaction);
+
 #endif
