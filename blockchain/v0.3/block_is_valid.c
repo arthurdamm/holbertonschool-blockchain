@@ -11,14 +11,14 @@ int validate_tx(llist_node_t node, unsigned int idx, void *arg)
 {
 	transaction_t *tx = node;
 	validation_vistor_t *visitor = arg;
-	
+
 	if (!idx)
 	{
 		if (!coinbase_is_valid(tx, visitor->block_index))
 			visitor->valid = 0;
 	}
 	else if (!transaction_is_valid(tx, visitor->all_unspent))
-		visitor->valid = 0;	
+		visitor->valid = 0;
 	return (0);
 }
 
