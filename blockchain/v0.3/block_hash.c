@@ -29,7 +29,8 @@ uint8_t *block_hash(block_t const *block,
 	int8_t *_buf, *buf;
 
 	len = len0;
-	len += llist_size(block->transactions) * SHA256_DIGEST_LENGTH;
+	if (llist_size(block->transactions) > 0)
+		len += llist_size(block->transactions) * SHA256_DIGEST_LENGTH;
 	buf = _buf = calloc(1, len);
 	if (!buf)
 		return (NULL);
