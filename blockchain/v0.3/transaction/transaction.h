@@ -132,4 +132,7 @@ int coinbase_is_valid(transaction_t const *coinbase, uint32_t block_index);
 
 void transaction_destroy(transaction_t *transaction);
 
+llist_t *update_unspent(llist_t *transactions,
+	uint8_t block_hash[SHA256_DIGEST_LENGTH], llist_t *all_unspent);
+
 #endif
