@@ -41,9 +41,9 @@ int check_inputs(llist_node_t node, unsigned int idx, void *arg)
 		!ec_verify(key, visitor->tx->id, SHA256_DIGEST_LENGTH, &txi->sig))
 	{
 		visitor->valid = 0;
-		return (1);
+		return (EC_KEY_free(key), 1);
 	}
-
+	EC_KEY_free(key);
 	visitor->in_amount += utxo->out.amount;
 	return (0);
 	(void)idx;

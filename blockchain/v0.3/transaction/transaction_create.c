@@ -88,6 +88,7 @@ transaction_t *populate_tx(EC_KEY const *sender, visitor_t *visitor,
 			exit(1);
 	}
 	/* delete unspent? */
+	llist_destroy(visitor->sender_unspent, 0, NULL);
 	return (tx);
 }
 
