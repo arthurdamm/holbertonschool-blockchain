@@ -45,3 +45,19 @@ void print_hex_buffer(uint8_t const *buf, size_t len)
 
 	fflush(NULL);
 }
+
+/**
+ * isarg - checks if arg is part of input line argv
+ * @info: line input info struct
+ * @arg: the argument to find
+ * Return: 1 if true else 0
+ */
+int isarg(info_t *info, char *arg)
+{
+	int i = 0;
+
+	for (i = 0; i < info->argc; i++)
+		if (!strcmp(info->argv[i], arg))
+			return (1);
+	return (0);
+}

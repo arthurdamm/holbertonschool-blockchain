@@ -81,23 +81,13 @@ int cli(info_t *info, char **av)
 int find_builtin(info_t *info)
 {
 	int i, built_in_ret = -1;
-	builtin_table builtintbl[] = {
-		{"exit", cmd_exit},
-		{"help", cmd_help},
-		{"wallet_load", cmd_wallet_load},
-		{"wallet_save", cmd_wallet_save},
-		{"wallet_show", cmd_wallet_show},
-		{"send", cmd_send},
-		{"mine", cmd_mine},
-		{"info", cmd_info},
-		{NULL, NULL}
-	};
+	builtin_t builtins[] = CLI_COMMANDS;
 
-	for (i = 0; builtintbl[i].type; i++)
-		if (strcmp(info->argv[0], builtintbl[i].type) == 0)
+	for (i = 0; builtins[i].name; i++)
+		if (strcmp(info->argv[0], builtins[i].name) == 0)
 		{
 			info->line_count++;
-			built_in_ret = builtintbl[i].func(info);
+			built_in_ret = builtins[i].func(info);
 			break;
 		}
 	return (built_in_ret);

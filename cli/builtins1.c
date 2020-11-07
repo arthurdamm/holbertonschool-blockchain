@@ -21,7 +21,25 @@ int cmd_exit(info_t *info)
  */
 int cmd_help(info_t *info)
 {
-	printf("help call works. Function not yet implemented \n");
+	builtin_t builtins[] = CLI_COMMANDS, *builtin = builtins;
+
+	if (info->argc == 1)
+	{
+		printf("Help on the following commands:\n");
+		for (; builtin->name; builtin++)
+			printf("%s%s", builtin->name, builtin[1].name != NULL ? ", " : "");
+		printf("\n");
+		return (0);
+	}
+	for (; builtin->name; builtin++)
+		if (!strcmp(info->argv[1], builtin->name))
+			break;
+	if (!builtin)
+		return (printf("Help: no such command.\n"), 0);
+	printf("%s", builtin->help);
+	return (0);
+
+
 	return (0);
 	(void)info;
 }

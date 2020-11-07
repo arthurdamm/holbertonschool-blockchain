@@ -102,11 +102,52 @@ int cmd_mine(info_t *info)
  */
 int cmd_info(info_t *info)
 {
-	_blockchain_print(info->blockchain_data->blockchain);
+	if (isarg(info, "-b"))
+		_blockchain_print_brief(info->blockchain_data->blockchain);
+	else
+		_blockchain_print(info->blockchain_data->blockchain);
 	printf("%s\n", "------------------------------------------------------");
 	printf("Blocks: %d\tUTXOs: %d\tTX Pool: %d\n",
 		llist_size(info->blockchain_data->blockchain->chain),
 		llist_size(info->blockchain_data->blockchain->unspent),
 		llist_size(info->blockchain_data->tx_pool));
+	return (0);
+}
+
+/**
+ * cmd_load - loads a blockchain from file
+ * @info: Structure containing potential arguments. Used to maintain
+ *          constant function prototype.
+ *  Return: always 0
+ */
+int cmd_load(info_t *info)
+{
+	blockchain_t *blockchain = NULL;
+
+	if (info->argc != 2)
+		return (printf(LOAD_USAGE), 0);
+	blockchain = blockchain_deserialize(info->argv[1]);
+	if (!blockchain)
+		printf("Failed to load blockchain.\n");
+	blockchain_destroy(info->blockchain_data->blockchain);
+	info->blockchain_data->blockchain = blockchain;
+	printf("Blockchain loaded successfully.\n");
+	return (0);
+}
+
+/**
+ * cmd_save - saves a blockchain to file
+ * @info: Structure containing potential arguments. Used to maintain
+ *          constant function prototype.
+ *  Return: always 0
+ */
+int cmd_save(info_t *info)
+{
+	if (info->argc != 2)
+		return (printf(SAVE_USAGE), 0);
+	if(!blockchain_serialize(info->blockchain_data->blockchain, info->argv[1]))
+		printf("Blockchain saved successfully.\n");
+	else
+		printf("Failed to save blockchain.\n");
 	return (0);
 }
