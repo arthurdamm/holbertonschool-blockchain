@@ -1,5 +1,4 @@
 #include "transaction.h"
-#include <provided.h>
 
 /**
  * collect_sender_unspent - collects sender's unspent tx
