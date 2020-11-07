@@ -63,6 +63,7 @@ int cmd_mine(info_t *info)
 		llist_get_tail(info->blockchain_data->blockchain->chain);
 	block_t *block;
 	transaction_t *coin_tx;
+	unspent_tx_out_t *utx;
 
 	memcpy(data, BLOCK_DATA, strlen(BLOCK_DATA));
 	block = block_create(prev_block, (int8_t *)data, sizeof(data));
@@ -88,11 +89,15 @@ int cmd_mine(info_t *info)
 		block_destroy(block);
 		return (0);
 	}
+	utx = unspent_tx_out_create(block->hash, coin_tx->id,
+		llist_get_head(coin_tx->outputs));
+	if (!utx || llist_add_node(info->blockchain_data->blockchain->unspent,
+		utx, ADD_NODE_REAR))
+		return (block_destroy(block), printf("Failed to created UTXO.\n"), 0);
 	llist_add_node(info->blockchain_data->blockchain->chain,
 		block, ADD_NODE_REAR);
 	printf("Block mined successfully!\n");
 	return (0);
-	(void)info;
 }
 
 /**
