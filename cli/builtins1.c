@@ -93,7 +93,7 @@ int cmd_wallet_show(info_t *info)
 	uint8_t pub[EC_PUB_LEN + 1] = {0};
 
 	ec_to_pub(info->blockchain_data->key, pub);
-	print_hex_buffer(pub, EC_PUB_LEN);
+	_print_hex_buffer(pub, EC_PUB_LEN);
 	printf("\n");
 	return (0);
 }

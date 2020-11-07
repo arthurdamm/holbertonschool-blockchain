@@ -1,7 +1,7 @@
 #ifndef TRANSACTION_H
 #define TRANSACTION_H
 
-#include "../blockchain.h"
+#include "blockchain.h"
 
 /**
  * struct transaction_s - Transaction structure

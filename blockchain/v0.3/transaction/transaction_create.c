@@ -1,4 +1,5 @@
 #include "transaction.h"
+#include <provided.h>
 
 /**
  * collect_sender_unspent - collects sender's unspent tx
@@ -116,6 +117,7 @@ transaction_t *transaction_create(EC_KEY const *sender, EC_KEY const *receiver,
 	visitor.amount = amount;
 	visitor.sender_pub = sender_pub;
 	llist_for_each(all_unspent, collect_sender_unspent, &visitor);
+	dprintf(2, "amount: %ld\n", visitor.total_amount);
 	if (visitor.total_amount < amount)
 		return (llist_destroy(visitor.sender_unspent, 0, NULL), NULL);
 	tx = calloc(1, sizeof(*tx));

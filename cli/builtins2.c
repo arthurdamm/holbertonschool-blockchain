@@ -129,7 +129,7 @@ int cmd_load(info_t *info)
 		return (printf(LOAD_USAGE), 0);
 	blockchain = blockchain_deserialize(info->argv[1]);
 	if (!blockchain)
-		printf("Failed to load blockchain.\n");
+		return (printf("Failed to load blockchain.\n"), 0);
 	blockchain_destroy(info->blockchain_data->blockchain);
 	info->blockchain_data->blockchain = blockchain;
 	printf("Blockchain loaded successfully.\n");

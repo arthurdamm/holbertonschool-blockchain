@@ -1,10 +1,12 @@
+/* Description: Unspent output refered to by transaction input not found  */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
-#include "blockchain.h"
+#include "transaction.h"
 
-void _transaction_print(transaction_t const *transaction);
+EC_KEY *_ec_load(char const *folder);
 
 /**
  * main - Entry point
@@ -15,60 +17,41 @@ int main(void)
 {
 	uint8_t block_hash[SHA256_DIGEST_LENGTH];
 	uint8_t transaction_id[SHA256_DIGEST_LENGTH];
-	tx_out_t *out, *out2;
+	tx_out_t *out;
 	uint8_t pub[EC_PUB_LEN];
-	EC_KEY *owner;
+	EC_KEY *sender, *receiver;
 	llist_t *all_unspent;
 	unspent_tx_out_t *unspent;
-	tx_in_t *in;
-	transaction_t transaction;
+	transaction_t *transaction;
 
-	/* Create a mock Block hash */
-	sha256((int8_t *)"Block", strlen("Block"), block_hash);
-	/*
-	 * Create a mock Transaction hash
-	 * This hash represents the transaction our mock output is from, and
-	 * our `owner` will receive the coins from
-	 */
-	sha256((int8_t *)"Transaction", strlen("Transaction"), transaction_id);
-	/*
-	 * In this example, `owner` will be the receiver of the transaction
-	 * output, and the sender of the transaction input we want to sign
-	 */
-	owner = ec_create();
-	/* Create a mock transaction output to give coins to our `owner` */
-	out = tx_out_create(972, ec_to_pub(owner, pub));
-	unspent = unspent_tx_out_create(block_hash, transaction_id, out);
-	/*
-	 * The list of all unspent transaction outputs is normally located
-	 * in our Blockchain
-	 */
+	sha256((int8_t *)"Block test", strlen("Block test"), block_hash);
+	sha256((int8_t *)"Transaction test", strlen("Transaction test"), transaction_id);
+
+	sender = ec_load("fee");
+	receiver = ec_load("foo");
 	all_unspent = llist_create(MT_SUPPORT_FALSE);
+
+	out = tx_out_create(500, ec_to_pub(sender, pub));
+	unspent = unspent_tx_out_create(block_hash, transaction_id, out);
 	llist_add_node(all_unspent, unspent, ADD_NODE_REAR);
 
-	transaction.inputs = llist_create(MT_SUPPORT_FALSE);
-	transaction.outputs = llist_create(MT_SUPPORT_FALSE);
-	/* Create the transaction input from the unspent transaction output */
-	in = tx_in_create(unspent);
-	llist_add_node(transaction.inputs, in, ADD_NODE_REAR);
-	pub[1] *= 2; /* Pretend it's a different address :) */
-	out2 = tx_out_create(972, pub);
-	llist_add_node(transaction.outputs, out2, ADD_NODE_REAR);
-
-	/* Compute transaction id (hash) */
-	transaction_hash(&transaction, transaction.id);
-	/* Sign transaction input with transaction hash */
-	tx_in_sign(in, transaction.id, owner, all_unspent);
-	_transaction_print(&transaction);
-	if (transaction_is_valid(&transaction, all_unspent))
+	/* Create transaction */
+	transaction = transaction_create(sender, receiver, 500, all_unspent);
+	if (!transaction)
+	{
+		printf("Failed to create transaction\n");
+		return (EXIT_FAILURE);
+	}
+	unspent->block_hash[0] +=1;
+	if (transaction_is_valid(transaction, all_unspent))
 		printf("Transaction valid\n");
 	else
-		fprintf(stderr, "Transaction invalid\n");
+		printf("Transaction invalid\n");
 
 	/* Cleanup */
-	EC_KEY_free(owner);
+	EC_KEY_free(sender);
+	EC_KEY_free(receiver);
 	free(out);
 	llist_destroy(all_unspent, 1, free);
-	free(in);
 	return (EXIT_SUCCESS);
 }
