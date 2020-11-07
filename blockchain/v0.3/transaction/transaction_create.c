@@ -117,7 +117,7 @@ transaction_t *transaction_create(EC_KEY const *sender, EC_KEY const *receiver,
 	visitor.sender_pub = sender_pub;
 	llist_for_each(all_unspent, collect_sender_unspent, &visitor);
 	if (visitor.total_amount < amount)
-		return (NULL);
+		return (llist_destroy(visitor.sender_unspent, 0, NULL), NULL);
 	tx = calloc(1, sizeof(*tx));
 	if (!tx)
 		return (NULL);
