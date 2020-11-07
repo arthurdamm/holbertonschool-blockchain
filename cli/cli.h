@@ -36,7 +36,8 @@
 #define SAVE_HELP SAVE_USAGE "Serializes blockchain to <path>.\n"
 #define MINE_HELP "Mines a new block.\n"
 #define INFO_HELP "Displays info about blockchain. " \
-	"Can use -b flag for brief. -u flag for unspents.\n"
+	"Can use -b flag for brief. -u flag for unspents.\n" \
+	"-p for tx pool.\n"
 
 #define READ_BUF_SIZE 1024
 /* 1 if using system getline() */
