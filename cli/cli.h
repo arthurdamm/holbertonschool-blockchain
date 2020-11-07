@@ -26,8 +26,10 @@
 
 #define EXIT_HELP "Exits the CLI shell.\n"
 #define HELP_HELP "Displays info on CLI commands.\n"
-#define WALLET_SAVE_HELP WALLET_SAVE_USAGE "Saves wallet EC_KEY pair to <path>.\n"
-#define WALLET_LOAD_HELP WALLET_LOAD_USAGE "Loads wallet EC_KEY pair from <path>.\n"
+#define WALLET_SAVE_HELP \
+	WALLET_SAVE_USAGE "Saves wallet EC_KEY pair to <path>.\n"
+#define WALLET_LOAD_HELP \
+	WALLET_LOAD_USAGE "Loads wallet EC_KEY pair from <path>.\n"
 #define WALLET_SHOW_HELP "Displays info about current wallet EC_KEY pair.\n"
 #define SEND_HELP SEND_USAGE "Sends currency to wallet.\n"
 #define LOAD_HELP LOAD_USAGE "Deserializes blockchain from <path>.\n"
@@ -56,7 +58,7 @@
 extern char **environ;
 
 /**
- * struct Blockchain_data - stores info about current blockchain
+ * struct blockchain_data - stores info about current blockchain
  * @key: EC_KEY pair, currently loaded wallet
  * @blockchain: the currently loaded blockchain
  * @tx_pool: local transaction pool

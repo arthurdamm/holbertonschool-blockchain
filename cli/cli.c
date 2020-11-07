@@ -51,7 +51,7 @@ int cli(info_t *info, char **av)
 			set_info(info, av);
 			builtin_ret = find_builtin(info);
 			if (builtin_ret == -1)
-				printf("No such command.\n");
+				printf("No such command. Try 'help'.\n");
 		}
 		else if (interactive(info))
 			putchar('\n');

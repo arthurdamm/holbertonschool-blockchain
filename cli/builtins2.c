@@ -17,11 +17,11 @@ int cmd_send(info_t *info)
 		return (printf(SEND_USAGE), 0);
 	amount = atoi(info->argv[1]);
 	for (i = 0; i < EC_PUB_LEN; i++)
-		sscanf(&info->argv[2][i * 2], "%2x", (unsigned int *)&pub[i]);
+		if (sscanf(&info->argv[2][i * 2], "%2x", (unsigned int *)&pub[i]) < 1)
+			break;
 	receiver = ec_from_pub(pub);
 	if (!receiver)
 		return (printf("Invalid receiver public key.\n"), 0);
-
 	tx = transaction_create(info->blockchain_data->key, receiver, amount,
 		info->blockchain_data->blockchain->unspent);
 	if (!tx)
@@ -65,7 +65,7 @@ int cmd_mine(info_t *info)
 	transaction_t *coin_tx;
 
 	memcpy(data, BLOCK_DATA, strlen(BLOCK_DATA));
-	block = block_create(prev_block,(int8_t *)data, sizeof(data));
+	block = block_create(prev_block, (int8_t *)data, sizeof(data));
 	if (!block)
 		return (printf("Failed to create block.\n"), 0);
 	block->info.difficulty =
@@ -88,7 +88,8 @@ int cmd_mine(info_t *info)
 		block_destroy(block);
 		return (0);
 	}
-	llist_add_node(info->blockchain_data->blockchain->chain, block, ADD_NODE_REAR);
+	llist_add_node(info->blockchain_data->blockchain->chain,
+		block, ADD_NODE_REAR);
 	printf("Block mined successfully!\n");
 	return (0);
 	(void)info;
@@ -145,7 +146,7 @@ int cmd_save(info_t *info)
 {
 	if (info->argc != 2)
 		return (printf(SAVE_USAGE), 0);
-	if(!blockchain_serialize(info->blockchain_data->blockchain, info->argv[1]))
+	if (!blockchain_serialize(info->blockchain_data->blockchain, info->argv[1]))
 		printf("Blockchain saved successfully.\n");
 	else
 		printf("Failed to save blockchain.\n");
