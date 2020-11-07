@@ -18,7 +18,7 @@ int _transaction_print_brief_loop(transaction_t const *transaction,
  *
  * Return: FOREACH_CONTINUE
  */
-static int _block_print(block_t const *block, unsigned int index,
+int _block_print(block_t const *block, unsigned int index,
 	char const *indent)
 {
 	char indent2[10] = {0};

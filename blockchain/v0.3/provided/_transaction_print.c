@@ -32,7 +32,7 @@ static int _tx_in_print(tx_in_t const *in, unsigned int idx,
 	return (0);
 }
 
-static int _tx_out_print(tx_out_t const *out, unsigned int idx,
+int _tx_out_print(tx_out_t const *out, unsigned int idx,
 	char const *indent)
 {
 	printf("%s\t\t{\n", indent);

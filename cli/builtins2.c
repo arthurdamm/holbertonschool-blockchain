@@ -51,56 +51,6 @@ int cmd_send(info_t *info)
 }
 
 /**
- * cmd_mine - mines a new block
- * @info: Structure containing potential arguments. Used to maintain
- *          constant function prototype.
- *  Return: always 0
- */
-int cmd_mine(info_t *info)
-{
-	int8_t data[64] = {0};
-	block_t *prev_block =
-		llist_get_tail(info->blockchain_data->blockchain->chain);
-	block_t *block;
-	transaction_t *coin_tx;
-	unspent_tx_out_t *utx;
-
-	memcpy(data, BLOCK_DATA, strlen(BLOCK_DATA));
-	block = block_create(prev_block, (int8_t *)data, sizeof(data));
-	if (!block)
-		return (printf("Failed to create block.\n"), 0);
-	block->info.difficulty =
-		blockchain_difficulty(info->blockchain_data->blockchain);
-	printf("DIFFICULTY: [%d]\n", block->info.difficulty);
-	coin_tx = coinbase_create(info->blockchain_data->key, block->info.index);
-	if (!coin_tx || !coinbase_is_valid(coin_tx, block->info.index))
-	{
-		printf("Failed to create valid coinbase transaction.\n");
-		transaction_destroy(coin_tx);
-		block_destroy(block);
-		return (0);
-	}
-	llist_add_node(block->transactions, coin_tx, ADD_NODE_FRONT);
-	block_mine(block);
-	if (block_is_valid(block, prev_block,
-		info->blockchain_data->blockchain->unspent))
-	{
-		printf("Failed to mine valid block.\n");
-		block_destroy(block);
-		return (0);
-	}
-	utx = unspent_tx_out_create(block->hash, coin_tx->id,
-		llist_get_head(coin_tx->outputs));
-	if (!utx || llist_add_node(info->blockchain_data->blockchain->unspent,
-		utx, ADD_NODE_REAR))
-		return (block_destroy(block), printf("Failed to created UTXO.\n"), 0);
-	llist_add_node(info->blockchain_data->blockchain->chain,
-		block, ADD_NODE_REAR);
-	printf("Block mined successfully!\n");
-	return (0);
-}
-
-/**
  * cmd_info - displays info about blockchain
  * @info: Structure containing potential arguments. Used to maintain
  *          constant function prototype.
@@ -108,6 +58,19 @@ int cmd_mine(info_t *info)
  */
 int cmd_info(info_t *info)
 {
+	if (isarg(info, "-u"))
+	{
+		print_all_unspent(info->blockchain_data->blockchain->unspent);
+		return (0);
+	}
+	if (isarg(info, "-p"))
+	{
+		printf("----------- TX Pool:\n");
+		llist_for_each(info->blockchain_data->tx_pool,
+		(node_func_t)_transaction_print_loop, "\t\t");
+		printf("----------- END TX Pool:\n");
+		return (0);
+	}
 	if (isarg(info, "-b"))
 		_blockchain_print_brief(info->blockchain_data->blockchain);
 	else

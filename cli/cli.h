@@ -35,7 +35,8 @@
 #define LOAD_HELP LOAD_USAGE "Deserializes blockchain from <path>.\n"
 #define SAVE_HELP SAVE_USAGE "Serializes blockchain to <path>.\n"
 #define MINE_HELP "Mines a new block.\n"
-#define INFO_HELP "Displays info about blockchain. Can use -b flag for brief.\n"
+#define INFO_HELP "Displays info about blockchain. " \
+	"Can use -b flag for brief. -u flag for unspents.\n"
 
 #define READ_BUF_SIZE 1024
 /* 1 if using system getline() */
@@ -148,6 +149,9 @@ int is_delim(char, char *);
 void *_realloc(void *, unsigned int, unsigned int);
 void print_hex_buffer(uint8_t const *buf, size_t len);
 int isarg(info_t *info, char *arg);
+
+/* unspent.c */
+void print_all_unspent(llist_t *unspent);
 
 /* getline.c module */
 ssize_t get_input(info_t *);

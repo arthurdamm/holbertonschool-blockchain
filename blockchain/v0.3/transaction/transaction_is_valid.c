@@ -33,6 +33,7 @@ int check_inputs(llist_node_t node, unsigned int idx, void *arg)
 
 	if (!utxo)
 	{
+		dprintf(2, "check_inputs: utxo NULL\n");
 		visitor->valid = 0;
 		return (1);
 	}
@@ -40,6 +41,7 @@ int check_inputs(llist_node_t node, unsigned int idx, void *arg)
 	if (!key ||
 		!ec_verify(key, visitor->tx->id, SHA256_DIGEST_LENGTH, &txi->sig))
 	{
+		dprintf(2, "check_inputs: key error\n");
 		visitor->valid = 0;
 		return (EC_KEY_free(key), 1);
 	}
@@ -92,6 +94,8 @@ int transaction_is_valid(transaction_t const *transaction,
 		return (0);
 	if (llist_for_each(transaction->outputs, check_outputs, &visitor) ||
 		visitor.in_amount != visitor.out_amount || !visitor.in_amount)
+	{
 		return (0);
+	}
 	return (1);
 }
