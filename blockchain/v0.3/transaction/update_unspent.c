@@ -49,9 +49,6 @@ int foreach_output(llist_node_t node, unsigned int idx, void *_args)
 	tx_out_t *txo = node;
 	unspent_tx_out_t *utxo;
 
-	printf("UPDATING BLOCK:");
-	_print_hex_buffer(args[1], SHA256_DIGEST_LENGTH);
-	printf("\n");
 	utxo = unspent_tx_out_create(args[1], args[2], txo);
 	if (!utxo)
 	{
